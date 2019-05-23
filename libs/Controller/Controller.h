@@ -17,6 +17,7 @@ namespace Politocean
         class Pinout
         {
         public:
+            // Pi 3
             static const int RESET              = 7;
             static const int MOTORS             = 12;
             
@@ -34,6 +35,12 @@ namespace Politocean
             static const int CAMERA_EN          = 33;
             static const int CAMERA_DIR         = 31;
             static const int CAMERA_STEP        = 29;
+
+            // Pi Zero
+            static const int BRUSHLESS_L_DIR    = 32;
+            static const int BRUSHLESS_R_PWM    = 33;
+
+            static const int LED                = 16;
         };
         
         class Controller
