@@ -19,10 +19,12 @@ using namespace Politocean::RPi;
 void signal_handler(int signal_num)
 {
     if (signal_num == SIGINT)
-    {
-        PiGPIO::gpioTerminate();
-        exit(signal_num);
-    }
+        exit(signal_num); // This will call destructor
+}
+
+Controller::~Controller()
+{
+    PiGPIO::gpioTerminate();
 }
 
 void Controller::setup()

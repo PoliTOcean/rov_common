@@ -49,6 +49,7 @@ namespace Politocean
             int err;
         
             static const int DFLT_SPI_HANDLE = -1;
+            
         public:
             enum class PinLevel { PIN_LOW, PIN_HIGH };
             enum class PinMode  { PIN_INPUT, PIN_OUTPUT };
@@ -57,6 +58,7 @@ namespace Politocean
             static const int DFLT_SPI_SPEED     = 1000000;
             
             Controller() : spiHandle_(DFLT_SPI_HANDLE), motors_(false) {}
+            ~Controller();
             
             // Setup GPIO using physical pins
             void setup();
