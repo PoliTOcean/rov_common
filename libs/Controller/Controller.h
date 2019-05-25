@@ -2,7 +2,7 @@
  * @author: pettinz
  * 
  * This class provides an interface with the Raspberry Pi GPIO and features
- * using the WiringPi libraries
+ * using the PiGPIO library
  */
 
 #ifndef CONTROLLER_H
@@ -14,8 +14,9 @@ namespace Politocean
     {
         class Pinout
         {
+            // TODO: Change physical pins to gpio pins
         public:
-            // Pi 3
+            // Raspberry Pi 3
             static const int RESET              = 7;
             static const int MOTORS             = 12;
             
@@ -34,7 +35,7 @@ namespace Politocean
             static const int CAMERA_DIR         = 31;
             static const int CAMERA_STEP        = 29;
 
-            // Pi Zero
+            // Raspberry Pi Zero
             static const int BRUSHLESS_L_DIR    = 32;
             static const int BRUSHLESS_R_PWM    = 33;
 
@@ -59,8 +60,7 @@ namespace Politocean
             
             Controller() : spiHandle_(DFLT_SPI_HANDLE), motors_(false) {}
             ~Controller();
-            
-            // Setup GPIO using physical pins
+
             void setup();
 
             void pinMode(int pin, PinMode mode);
