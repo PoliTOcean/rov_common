@@ -5,60 +5,126 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <csignal>
 
 #include "Controller.h"
 
-namespace WiringPi
+namespace PiGPIO
 {
-    #include "wiringPi.h"
-    #include "wiringPiSPI.h"
-    #include "softPwm.h"
+    #include "pigpio.h"
 }
 
 using namespace Politocean::RPi;
 
+void signal_handler(int signal_num)
+{
+    if (signal_num == SIGINT)
+    {
+        PiGPIO::gpioTerminate();
+        exit(signal_num);
+    }
+}
+
 void Controller::setup()
 {
-    WiringPi::wiringPiSetupPhys();
+    if (PiGPIO::gpioInitialise() < 0)
+    {
+        // TODO: throw error
+    }
 }
 
 void Controller::pinMode(int pin, PinMode mode)
 {
-    WiringPi::pinMode(pin, static_cast<int>(mode));
+    PiGPIO::gpioSetMode(pin, static_cast<int>(mode));
 }
 
 void Controller::digitalWrite(int pin, PinLevel level)
 {
-    WiringPi::digitalWrite(pin, static_cast<int>(level));
+    PiGPIO::gpioWrite(pin, static_cast<int>(level));
 }
 
-void Controller::softPwmCreate(int pwmPin, int start, int stop)
+void Controller::setPwm(int pin, int dutyCycle)
 {
-    WiringPi::softPwmCreate(pwmPin, start, stop);
+    if ((err = PiGPIO::gpioPWM(pin, dutyCycle)) != 0)
+    {
+        // TODO: throw error
+    }
 }
 
-void Controller::softPwmWrite(int pwmPin, int value)
+void Controller::setPwmRange(int pin, int range)
 {
-    WiringPi::softPwmWrite(pwmPin, value);
+    if ((err = PiGPIO::gpioSetPWMrange(pin, range)) != 0)
+    {
+        // TODO: throw error
+    }
 }
 
-void Controller::softPwmStop(int pwmPin)
+void Controller::setPwmFrequency(int pin, int frequency)
 {
-    WiringPi::softPwmStop(pwmPin);
+    if ((err = PiGPIO::gpioSetPWMfrequency(pin, frequency)) != 0)
+    {
+        // TODO: throw error
+    }
 }
 
-void Controller::setupSPI(int device, int frequency)
+void Controller::setHardwarePwm(int pin, int frequency, int range)
 {
-    WiringPi::wiringPiSPISetup(device, frequency);
+    if ((err = PiGPIO::gpioHardwarePWM(pin, frequency, range)) != 0)
+    {
+        // TODO: throw error
+    }
 }
 
-unsigned char Controller::SPIDataRW(unsigned char data)
+void Controller::SPI::spiOpen(int channel, int frequency)
 {
-    unsigned char tmp = data;
+    if ((handle_ = PiGPIO::spiOpen(channel, frequency, 0)) < 0)
+    {
+        // TODO: throw error
+    }
+}
 
-    WiringPi::wiringPiSPIDataRW(spiDevice_, &tmp, sizeof(unsigned char));
+void Controller::SPI::spiClose()
+{
+    if (handle_ < 0)
+    {
+        // TODO: throw error
+    }
 
-    return tmp;
+    if ((err_ = PiGPIO::spiClose(handle_)) != 0)
+    {
+        // TODO: throw error
+    }
+}
+
+void Controller::SPI::spiXfer(char *txBuf, char *rxBuf, int count)
+{
+    if (handle_ < 0)
+    {
+        // TODO: throw error
+    }
+
+    if (PiGPIO::spiXfer(handle_, txBuf, rxBuf, count) != count)
+    {
+        // TODO: throw error
+    }
+}
+
+void Controller::SPI::setup(int channel, int speed, int bytes)
+{
+    channel_    = channel;
+    speed_      = speed;
+    bytes_      = bytes;
+
+    spiOpen(channel, speed);
+}
+
+char Controller::SPI::transfer(char msg)
+{
+    char txBuf = msg, rxBuf;
+
+    spiXfer(&txBuf, &rxBuf, bytes_);
+
+    return rxBuf;
 }
 
 void Controller::reset()

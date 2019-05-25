@@ -8,8 +8,6 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 
-#include "PolitoceanConstants.h"
-
 namespace Politocean
 {
     namespace RPi
@@ -45,17 +43,20 @@ namespace Politocean
         
         class Controller
         {
-            int spiDevice_;
+            int spiHandle_;
             bool motors_;
+
+            int err;
         
+            static const int DFLT_SPI_HANDLE = -1;
         public:
             enum class PinLevel { PIN_LOW, PIN_HIGH };
             enum class PinMode  { PIN_INPUT, PIN_OUTPUT };
             
-            static const int DEFAULT_SPI_CHANNEL    = 0;
-            static const int DEFAULT_SPI_SPEED      = 1000000;
+            static const int DFLT_SPI_CHANNEL   = 0;
+            static const int DFLT_SPI_SPEED     = 1000000;
             
-            Controller() : spiDevice_(DEFAULT_SPI_CHANNEL), motors_(false) {}
+            Controller() : spiHandle_(DFLT_SPI_HANDLE), motors_(false) {}
             
             // Setup GPIO using physical pins
             void setup();
@@ -63,21 +64,48 @@ namespace Politocean
             void pinMode(int pin, PinMode mode);
             void digitalWrite(int pin, PinLevel level);
             
-            // Software PWM based on softPwm.h
-            void softPwmCreate(int pwmPin, int start, int stop);
-            void softPwmWrite(int pwmPin, int value);
-            void softPwmStop(int pwmPin);
-            
-            void setupSPI(int device, int frequency);
+            void setPwm(int pin, int dutyCycle);
+            void setPwmRange(int pin, int range);
+            void setPwmFrequency(int pin, int frequency);
 
-            void setupMotors();
+            void setHardwarePwm(int pin, int frequency, int dutyCycle);
+
+            /*
+            void setupSPI(int device, int frequency);
             
             unsigned char SPIDataRW(unsigned char data);
-            
+            */
+            void setupMotors();
+
             void startMotors();
             void stopMotors();
             
             void reset();
+
+            class SPI
+            {
+                int err_;
+                int handle_, channel_, speed_, bytes_;
+
+                void spiOpen(int channel, int frequency);
+                void spiClose();
+
+                void spiXfer(char *txBuf, char *rxBuf, int count);
+
+                static const int DFLT_HANDLE    = -1;
+
+            public:
+                static const int DFLT_CHANNEL   = 0;
+                static const int DFLT_SPEED     = 1000000;
+                static const int DFLT_BYTES     = 1;
+
+                SPI() : handle_(DFLT_HANDLE), channel_(DFLT_CHANNEL), speed_(DFLT_SPEED), bytes_(DFLT_BYTES) {}
+                ~SPI() { spiClose(); }
+
+                void setup(int channel, int speed, int bytes);
+
+                char transfer(char msg);
+            };
         };
     }
 }
