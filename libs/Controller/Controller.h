@@ -47,17 +47,14 @@ namespace Politocean
             int spiHandle_;
             bool motors_;
 
-            int err;
-        
-            static const int DFLT_SPI_HANDLE = -1;
+            int err_;
 
         public:
             enum class PinLevel { PIN_LOW, PIN_HIGH };
             enum class PinMode  { PIN_INPUT, PIN_OUTPUT };
-            
-            static const int DFLT_SPI_CHANNEL   = 0;
-            static const int DFLT_SPI_SPEED     = 1000000;
-            
+
+            static const int DFLT_SPI_HANDLE = -1;
+
             Controller() : spiHandle_(DFLT_SPI_HANDLE), motors_(false) {}
             ~Controller();
 
@@ -72,36 +69,16 @@ namespace Politocean
 
             void setHardwarePwm(int pin, int frequency, int dutyCycle);
 
+
+            void spiOpen(int channel, int frequency);
+            void spiClose();
+            void spiXfer(char *txBuf, char *rxBuf, int count);
+
             void setupMotors();
             void startMotors();
             void stopMotors();
             
             void reset();
-
-            class SPI
-            {
-                int err_;
-                int handle_, channel_, speed_, bytes_;
-
-                void spiOpen(int channel, int frequency);
-                void spiClose();
-
-                void spiXfer(char *txBuf, char *rxBuf, int count);
-
-                static const int DFLT_HANDLE    = -1;
-
-            public:
-                static const int DFLT_CHANNEL   = 0;
-                static const int DFLT_SPEED     = 1000000;
-                static const int DFLT_BYTES     = 1;
-
-                SPI() : handle_(DFLT_HANDLE), channel_(DFLT_CHANNEL), speed_(DFLT_SPEED), bytes_(DFLT_BYTES) {}
-                ~SPI() { spiClose(); }
-
-                void setup(int channel, int speed, int bytes);
-
-                char transfer(char msg);
-            };
         };
     }
 }

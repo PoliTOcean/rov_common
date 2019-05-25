@@ -47,7 +47,7 @@ void Controller::digitalWrite(int pin, PinLevel level)
 
 void Controller::setPwm(int pin, int dutyCycle)
 {
-    if ((err = PiGPIO::gpioPWM(pin, dutyCycle)) != 0)
+    if ((err_ = PiGPIO::gpioPWM(pin, dutyCycle)) != 0)
     {
         // TODO: throw error
     }
@@ -55,7 +55,7 @@ void Controller::setPwm(int pin, int dutyCycle)
 
 void Controller::setPwmRange(int pin, int range)
 {
-    if ((err = PiGPIO::gpioSetPWMrange(pin, range)) != 0)
+    if ((err_ = PiGPIO::gpioSetPWMrange(pin, range)) != 0)
     {
         // TODO: throw error
     }
@@ -63,7 +63,7 @@ void Controller::setPwmRange(int pin, int range)
 
 void Controller::setPwmFrequency(int pin, int frequency)
 {
-    if ((err = PiGPIO::gpioSetPWMfrequency(pin, frequency)) != 0)
+    if ((err_ = PiGPIO::gpioSetPWMfrequency(pin, frequency)) != 0)
     {
         // TODO: throw error
     }
@@ -71,7 +71,7 @@ void Controller::setPwmFrequency(int pin, int frequency)
 
 void Controller::setHardwarePwm(int pin, int frequency, int range)
 {
-    if ((err = PiGPIO::gpioHardwarePWM(pin, frequency, range)) != 0)
+    if ((err_ = PiGPIO::gpioHardwarePWM(pin, frequency, range)) != 0)
     {
         // TODO: throw error
     }
@@ -107,54 +107,36 @@ void Controller::reset()
     std::this_thread::sleep_for(std::chrono::seconds(3));
 }
 
-void Controller::SPI::spiOpen(int channel, int frequency)
+void Controller::spiOpen(int channel, int frequency)
 {
-    if ((handle_ = PiGPIO::spiOpen(channel, frequency, 0)) < 0)
+    if ((spiHandle_ = PiGPIO::spiOpen(channel, frequency, 0)) < 0)
     {
         // TODO: throw error
     }
 }
 
-void Controller::SPI::spiClose()
+void Controller::spiClose()
 {
-    if (handle_ < 0)
+    if (spiHandle_ < 0)
     {
         // TODO: throw error
     }
 
-    if ((err_ = PiGPIO::spiClose(handle_)) != 0)
-    {
-        // TODO: throw error
-    }
-}
-
-void Controller::SPI::spiXfer(char *txBuf, char *rxBuf, int count)
-{
-    if (handle_ < 0)
-    {
-        // TODO: throw error
-    }
-
-    if (PiGPIO::spiXfer(handle_, txBuf, rxBuf, count) != count)
+    if ((err_ = PiGPIO::spiClose(spiHandle_)) != 0)
     {
         // TODO: throw error
     }
 }
 
-void Controller::SPI::setup(int channel, int speed, int bytes)
+void Controller::spiXfer(char *txBuf, char *rxBuf, int count)
 {
-    channel_    = channel;
-    speed_      = speed;
-    bytes_      = bytes;
+    if (spiHandle_ < 0)
+    {
+        // TODO: throw error
+    }
 
-    spiOpen(channel, speed);
-}
-
-char Controller::SPI::transfer(char msg)
-{
-    char txBuf = msg, rxBuf;
-
-    spiXfer(&txBuf, &rxBuf, bytes_);
-
-    return rxBuf;
+    if (PiGPIO::spiXfer(spiHandle_, txBuf, rxBuf, count) != count)
+    {
+        // TODO: throw error
+    }
 }
