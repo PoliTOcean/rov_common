@@ -77,6 +77,36 @@ void Controller::setHardwarePwm(int pin, int frequency, int range)
     }
 }
 
+void Controller::setupMotors()
+{
+    pinMode(Pinout::MOTORS, PinMode::PIN_OUTPUT);
+}
+
+void Controller::startMotors()
+{
+    motors_ = true;
+
+    digitalWrite(Pinout::MOTORS, PinLevel::PIN_HIGH);
+}
+
+void Controller::stopMotors()
+{
+    motors_ = false;
+
+    digitalWrite(Pinout::MOTORS, PinLevel::PIN_LOW);
+}
+
+void Controller::reset()
+{
+    pinMode(Pinout::RESET, PinMode::PIN_OUTPUT);
+
+    digitalWrite(Pinout::RESET, PinLevel::PIN_LOW);
+    std::this_thread::sleep_for(std::chrono::microseconds(100));
+
+    digitalWrite(Pinout::RESET, PinLevel::PIN_HIGH);
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+}
+
 void Controller::SPI::spiOpen(int channel, int frequency)
 {
     if ((handle_ = PiGPIO::spiOpen(channel, frequency, 0)) < 0)
@@ -128,34 +158,3 @@ char Controller::SPI::transfer(char msg)
 
     return rxBuf;
 }
-
-void Controller::reset()
-{
-    pinMode(Pinout::RESET, PinMode::PIN_OUTPUT);
-
-    digitalWrite(Pinout::RESET, PinLevel::PIN_LOW);
-    std::this_thread::sleep_for(std::chrono::microseconds(100));
-
-    digitalWrite(Pinout::RESET, PinLevel::PIN_HIGH);
-    std::this_thread::sleep_for(std::chrono::seconds(3));
-}
-
-void Controller::setupMotors()
-{
-    pinMode(Pinout::MOTORS, PinMode::PIN_OUTPUT);
-}
-
-void Controller::stopMotors()
-{
-    motors_ = false;
-
-    digitalWrite(Pinout::MOTORS, PinLevel::PIN_LOW);
-}
-
-void Controller::startMotors()
-{
-    motors_ = true;
-
-    digitalWrite(Pinout::MOTORS, PinLevel::PIN_HIGH);
-}
-

@@ -49,7 +49,7 @@ namespace Politocean
             int err;
         
             static const int DFLT_SPI_HANDLE = -1;
-            
+
         public:
             enum class PinLevel { PIN_LOW, PIN_HIGH };
             enum class PinMode  { PIN_INPUT, PIN_OUTPUT };
@@ -72,13 +72,7 @@ namespace Politocean
 
             void setHardwarePwm(int pin, int frequency, int dutyCycle);
 
-            /*
-            void setupSPI(int device, int frequency);
-            
-            unsigned char SPIDataRW(unsigned char data);
-            */
             void setupMotors();
-
             void startMotors();
             void stopMotors();
             
