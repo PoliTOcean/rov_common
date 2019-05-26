@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 project(Controller VERSION 1.0.0 LANGUAGES CXX)
 
-add_library(Controller
+add_library(Controller SHARED
         Controller.cpp)
 
 add_library(RovCommon::Controller ALIAS Controller)
