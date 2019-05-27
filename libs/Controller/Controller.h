@@ -74,6 +74,8 @@ namespace Politocean
             void spiClose();
             void spiXfer(char *txBuf, char *rxBuf, int count);
 
+            void sleep(double seconds);
+
             void setupMotors();
             void startMotors();
             void stopMotors();

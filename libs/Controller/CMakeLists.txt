@@ -6,7 +6,7 @@ add_library(Controller
 
 add_library(RovCommon::Controller ALIAS Controller)
 
-target_link_libraries(Controller -lwiringPi -lcrypt -lrt)
+target_link_libraries(Controller -lpigpio -pthread -lrt)
 
 target_include_directories(Controller
         PUBLIC

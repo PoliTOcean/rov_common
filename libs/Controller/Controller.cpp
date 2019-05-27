@@ -77,6 +77,11 @@ void Controller::setHardwarePwm(int pin, int frequency, int range)
     }
 }
 
+void Controller::sleep(double seconds)
+{
+    PiGPIO::time_sleep(seconds);
+}
+
 void Controller::setupMotors()
 {
     pinMode(Pinout::MOTORS, PinMode::PIN_OUTPUT);
