@@ -26,7 +26,7 @@ namespace Politocean
             void setup(int channel, int speed);
 
             char transfer(char msg);
-            std::vector<char> SPI::transfer(const std::vector<char>& msg, int bytes);
+            std::vector<char> transfer(const std::vector<char>& msg, int bytes);
         };
     }
 }

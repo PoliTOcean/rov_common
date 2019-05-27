@@ -33,7 +33,7 @@ std::vector<char> SPI::transfer(const std::vector<char>& msg, int bytes)
 
     std::vector<char> rx;
 
-    rxBuf = (char *)malloc(bytes * sizeof(char));
+    txBuf = (char *)malloc(bytes * sizeof(char));
     rxBuf = (char *)malloc(bytes * sizeof(char));
 
     for (i = 0; i < bytes; txBuf[i] = msg[i], i++);
