@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 project(SPI VERSION 1.0.0 LANGUAGES CXX)
 
-add_library(SPI
+add_library(SPI SHARED
         SPI.cpp)
 
 add_library(RovCommon::SPI ALIAS SPI)
