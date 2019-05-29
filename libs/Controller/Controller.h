@@ -31,9 +31,9 @@ namespace Politocean
             static const int HAND_DIR           = 23;
             static const int HAND_PWM           = 24;
             
-            static const int CAMERA_EN          = 13;
+            static const int CAMERA_EN          = 5;
             static const int CAMERA_DIR         = 6;
-            static const int CAMERA_STEP        = 5;
+            static const int CAMERA_STEP        = 13;
 
             // Raspberry Pi Zero
             static const int BRUSHLESS_L_DIR    = 12;
