@@ -32,9 +32,9 @@ namespace Politocean
             static const int HAND_DIR           = 16;
             static const int HAND_PWM           = 18;
             
-            static const int CAMERA_EN          = 33;
+            static const int CAMERA_EN          = 29;
             static const int CAMERA_DIR         = 31;
-            static const int CAMERA_STEP        = 29;
+            static const int CAMERA_STEP        = 33;
 
             // Pi Zero
             static const int BRUSHLESS_L_DIR    = 32;
