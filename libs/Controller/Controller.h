@@ -70,7 +70,7 @@ namespace Politocean
             
             void setupSPI(int device, int frequency);
 
-            void setupMotors();
+            PinLevel setupMotors();
             
             unsigned char SPIDataRW(unsigned char data);
             
