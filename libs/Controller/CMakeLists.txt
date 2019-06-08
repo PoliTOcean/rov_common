@@ -4,7 +4,7 @@ project(Controller VERSION 1.0.0 LANGUAGES CXX)
 add_library(Controller SHARED
         Controller.cpp)
 
-add_library(RovCommon::Controller ALIAS Controller)
+add_library(PolitoceanRovCommon::Controller ALIAS Controller)
 
 target_link_libraries(Controller -lwiringPi -lcrypt -lrt)
 
@@ -21,7 +21,7 @@ target_compile_options(Controller PRIVATE $<$<CXX_COMPILER_ID:GNU>:-Wall>)
 
 include(GNUInstallDirs)
 install(TARGETS Controller
-        EXPORT RovCommonTargets
+        EXPORT PolitoceanRovCommonTargets
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
