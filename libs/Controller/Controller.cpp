@@ -72,9 +72,12 @@ void Controller::reset()
     std::this_thread::sleep_for(std::chrono::seconds(3));
 }
 
-void Controller::setupMotors()
+Controller::PinLevel Controller::setupMotors()
 {
     pinMode(Pinout::MOTORS, PinMode::PIN_OUTPUT);
+
+    return WiringPi::digitalRead(Pinout::MOTORS) ? PinLevel::PIN_HIGH : PinLevel::PIN_LOW;
+
 }
 
 void Controller::stopMotors()
