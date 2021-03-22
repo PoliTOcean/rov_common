@@ -8,55 +8,53 @@
 
 #include "Controller.h"
 
-namespace WiringPi
+namespace pigpio
 {
-    #include "wiringPi.h"
-    #include "wiringPiSPI.h"
-    #include "softPwm.h"
+    #include "pigpio.h"
 }
 
 using namespace Politocean::RPi;
 
 void Controller::setup()
 {
-    WiringPi::wiringPiSetupPhys();
+    pigpio::gpioInitialise();
 }
 
 void Controller::pinMode(int pin, PinMode mode)
 {
-    WiringPi::pinMode(pin, static_cast<int>(mode));
+    pigpio::gpioSetMode(pin, static_cast<int>(mode));
 }
 
 void Controller::digitalWrite(int pin, PinLevel level)
 {
-    WiringPi::digitalWrite(pin, static_cast<int>(level));
+    pigpio::gpioWrite(pin, static_cast<int>(level));
 }
 
 void Controller::softPwmCreate(int pwmPin, int start, int stop)
 {
-    WiringPi::softPwmCreate(pwmPin, start, stop);
+    pigpio::gpioSetPWMrange(pwmPin, (unsigned)stop);
 }
 
 void Controller::softPwmWrite(int pwmPin, int value)
 {
-    WiringPi::softPwmWrite(pwmPin, value);
+    pigpio::gpioPWM(pwmPin, value);
 }
 
 void Controller::softPwmStop(int pwmPin)
 {
-    WiringPi::softPwmStop(pwmPin);
+    pigpio::gpioPWM(pwmPin, 0);
 }
 
 void Controller::setupSPI(int device, int frequency)
 {
-    WiringPi::wiringPiSPISetup(device, frequency);
+    pigpio::spiOpen(device, frequency, 0);
 }
 
 unsigned char Controller::SPIDataRW(unsigned char data)
 {
-    unsigned char tmp = data;
+    char tmp = data;
 
-    WiringPi::wiringPiSPIDataRW(spiDevice_, &tmp, sizeof(unsigned char));
+    pigpio::spiXfer(spiDevice_, &tmp, &tmp, sizeof(char));
 
     return tmp;
 }
@@ -76,7 +74,7 @@ Controller::PinLevel Controller::setupMotors()
 {
     pinMode(Pinout::MOTORS, PinMode::PIN_OUTPUT);
 
-    return WiringPi::digitalRead(Pinout::MOTORS) ? PinLevel::PIN_HIGH : PinLevel::PIN_LOW;
+    return pigpio::gpioRead(Pinout::MOTORS) ? PinLevel::PIN_HIGH : PinLevel::PIN_LOW;
 
 }
 

@@ -6,7 +6,7 @@ add_library(Controller SHARED
 
 add_library(PolitoceanRovCommon::Controller ALIAS Controller)
 
-target_link_libraries(Controller -lwiringPi -lcrypt -lrt)
+target_link_libraries(Controller -lpigpio -lcrypt -lrt)
 
 target_include_directories(Controller
         PUBLIC
