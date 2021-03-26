@@ -18,29 +18,29 @@ namespace Politocean
         {
         public:
             // Pi 3
-            static const int RESET              = 7;
-            static const int MOTORS             = 12;
+            static const int RESET              = 4;
+            static const int MOTORS             = 18;
             
-            static const int SHOULDER_EN        = 15;
-            static const int SHOULDER_DIR       = 13;
-            static const int SHOULDER_STEP      = 11;
+            static const int SHOULDER_EN        = 22;
+            static const int SHOULDER_DIR       = 27;
+            static const int SHOULDER_STEP      = 17;
             
-            static const int WRIST_EN           = 40;
-            static const int WRIST_DIR          = 38;
-            static const int WRIST_STEP         = 36;
+            static const int WRIST_EN           = 21;
+            static const int WRIST_DIR          = 20;
+            static const int WRIST_STEP         = 16;
             
-            static const int HAND_DIR           = 16;
-            static const int HAND_PWM           = 18;
+            static const int HAND_DIR           = 23;
+            static const int HAND_PWM           = 24;
             
-            static const int CAMERA_EN          = 29;
-            static const int CAMERA_DIR         = 31;
-            static const int CAMERA_STEP        = 33;
+            static const int CAMERA_EN          = 5;
+            static const int CAMERA_DIR         = 6;
+            static const int CAMERA_STEP        = 13;
 
             // Pi Zero
-            static const int BRUSHLESS_L_DIR    = 32;
-            static const int BRUSHLESS_R_PWM    = 33;
+            static const int BRUSHLESS_L_DIR    = 12;
+            static const int BRUSHLESS_R_PWM    = 13;
 
-            static const int LED                = 16;
+            static const int LED                = 23;
         };
         
         class Controller
